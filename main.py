@@ -13,11 +13,11 @@ get_current_dayofweek = lambda action: time.strftime("%A", time.localtime(time.t
 
 
 SLEEPTIME = 0.2 # 每次抢座的间隔
-ENDTIME = "07:01:00" # 根据学校的预约座位时间+1min即可
+ENDTIME = "18:31:00" # 根据学校的预约座位时间+1min即可
 
-ENABLE_SLIDER = False # 是否有滑块验证
+ENABLE_SLIDER = True # 是否有滑块验证
 MAX_ATTEMPT = 5 # 最大尝试次数
-RESERVE_NEXT_DAY = False # 预约明天而不是今天的
+RESERVE_NEXT_DAY = True # 预约明天而不是今天的
 
                 
 
@@ -105,13 +105,16 @@ def get_roomid(args1, args2):
 
 
 if __name__ == "__main__":
-    config_path = os.path.join(os.path.dirname(__file__), 'config.json')
-    parser = argparse.ArgumentParser(prog='Chao Xing seat auto reserve')
-    parser.add_argument('-u','--user', default=config_path, help='user config file')
-    parser.add_argument('-m','--method', default="reserve" ,choices=["reserve", "debug", "room"], help='for debug')
-    parser.add_argument('-a','--action', action="store_true",help='use --action to enable in github action')
-    args = parser.parse_args()
-    func_dict = {"reserve": main, "debug":debug, "room": get_roomid}
-    with open(args.user, "r+") as data:
-        usersdata = json.load(data)["reserve"]
-    func_dict[args.method](usersdata, args.action)
+  currentTime = time.strftime("%H:%M:%S", time.localtime(time.time()))
+  while (currentTime != "10:30:00"):
+    currentTime = time.strftime("%H:%M:%S", time.localtime(time.time()))
+  config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+  parser = argparse.ArgumentParser(prog='Chao Xing seat auto reserve')
+  parser.add_argument('-u','--user', default=config_path, help='user config file')
+  parser.add_argument('-m','--method', default="reserve" ,choices=["reserve", "debug", "room"], help='for debug')
+  parser.add_argument('-a','--action', action="store_true",help='use --action to enable in github action')
+  args = parser.parse_args()
+  func_dict = {"reserve": main, "debug":debug, "room": get_roomid}
+  with open(args.user, "r+") as data:
+      usersdata = json.load(data)["reserve"]
+  func_dict[args.method](usersdata, args.action)
