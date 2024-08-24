@@ -108,6 +108,7 @@ if __name__ == "__main__":
   currentTime = time.strftime("%H:%M:%S", time.localtime(time.time()))
   while (currentTime != "07:09:00"):
     currentTime = time.strftime("%H:%M:%S", time.localtime(time.time()))
+    print("currentTime")
   config_path = os.path.join(os.path.dirname(__file__), 'config.json')
   parser = argparse.ArgumentParser(prog='Chao Xing seat auto reserve')
   parser.add_argument('-u','--user', default=config_path, help='user config file')
